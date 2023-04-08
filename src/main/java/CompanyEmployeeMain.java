@@ -1,4 +1,5 @@
 import model.Company;
+import model.Employee;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -12,19 +13,33 @@ public class CompanyEmployeeMain {
     private static Scanner scanner = new Scanner(System.in);
     private static Connection connection = DBConectionProvider.getInstance().getConnection();
     public static void main(String[] args) {
-//        System.out.println("Please input company name,country");
-//        String companyStr = scanner.nextLine();
-//        String[] companyData = companyStr.split(",");
-//        Company company = new Company();
-//        company.setName(companyData[0]);
-//        company.setCountry(companyData[1]);
-//        saveCompanyToDB(company);
-        List<Company> companyList = getAllCompaniesFromDB();
-        for (Company company : companyList) {
-            System.out.println(company);
+        System.out.println("Please input employee name,surname,email,company_Id");
+        String companyStr = scanner.nextLine();
+        String[] employeeData = companyStr.split(",");
+        Employee employee = new Employee();
+        employee.setName(employeeData[0]);
+        employee.setSurname(employeeData[1]);
+        employee.setEmail(employeeData[2]);
+        employee.setCompany_id(Integer.parseInt(employeeData[3]));
+        saveEmployeeToDB(employee);
 
+
+//        List<Company> companyList = getAllCompaniesFromDB();
+//        for (Company company : companyList) {
+//            System.out.println(company);
+//        }
+
+
+    }
+
+    private static void saveEmployeeToDB(Employee employee) {
+        try {
+            Statement statement1 = connection.createStatement();
+            statement1.executeUpdate("insert into employee (name,surname,email,company_id) values ('"+ employee.getName()+"','"+ employee.getSurname()+"','" + employee.getEmail()+ "','" + employee.getCompany_id()+ "');");
+            System.out.println("Employee inserted into DB");
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-
 
     }
 
